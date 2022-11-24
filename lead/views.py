@@ -6,6 +6,7 @@ from .forms import AddLeadForm
 from .models import Lead
 
 from client.models import Client
+from team.models import Team
 
 @login_required
 def leads_list(request):
@@ -54,12 +55,17 @@ def leads_edit(request, pk):
 
 @login_required
 def add_lead(request):
+    team = Team.objects.filter(created_by=request.user)[0]
+
     if request.method == 'POST':
         form = AddLeadForm(request.POST)
 
         if form.is_valid():
+            team = Team.objects.filter(created_by=request.user)[0]
+
             lead = form.save(commit=False)
             lead.created_by = request.user
+            lead.team = team
             lead.save()
 
             messages.success(request, 'The lead was created.')
@@ -69,18 +75,21 @@ def add_lead(request):
         form = AddLeadForm()
 
     return render(request, 'lead/add_lead.html', {
-        'form': form
+        'form': form,
+        'team': team,
     })
 
 @login_required
 def convert_to_client(request, pk):
     lead = get_object_or_404(Lead, created_by=request.user, pk=pk)
+    team = Team.objects.filter(created_by=request.user)[0]
 
     client = Client.objects.create(
         name=lead.name,
         email=lead.email,
         description=lead.description,
         created_by=request.user,
+        team=team,
     )
 
     lead.converted_to_client = True
