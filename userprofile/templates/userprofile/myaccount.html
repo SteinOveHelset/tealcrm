@@ -14,7 +14,7 @@
         <strong>Team: </strong>{{ team.name }}
 
         {% if team.created_by == request.user %}
-            <a href="{% url 'edit_team' team.id %}">(Edit)</a>
+            <a href="{% url 'team:edit' team.id %}">(Edit)</a>
         {% endif %}
     </p>
 

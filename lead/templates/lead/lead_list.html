@@ -1,0 +1,31 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Leads{% endblock %}
+
+{% block content %}
+    <div class="py-6 px-6">
+        <h1 class="mb-4 text-xl">Leads</h1>
+
+        <a href="{% url 'leads:add' %}" class="inline-block py-4 px-6 bg-teal-600 rounded-xl text-white">Add lead</a>
+    
+        {% if object_list %}
+            <div class="mt-6 flex justify-between">
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Name</p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Priority</p>
+                <p class="py-4 px-2 bg-gray-200 font-semibold w-full">Status</p>
+            </div>
+
+            {% for lead in object_list %}
+                <div class="flex justify-between">
+                    <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">
+                        <a href="{% url 'leads:detail' lead.id %}">{{ lead.name }}</a>
+                    </p>
+                    <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">{{ lead.get_priority_display }}</p>
+                    <p class="py-2 px-2 w-full {% cycle 'bg-gray-100' '' %}">{{ lead.get_status_display }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="mt-6 px-2">There are no leads in the database yet...</p>
+        {% endif %}
+    </div>
+{% endblock %}
