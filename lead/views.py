@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import ListView, DetailView, DeleteView, UpdateView, CreateView
 
-from .forms import AddCommentForm
+from .forms import AddCommentForm, AddFileForm
 from .models import Lead
 
 from client.models import Client, Comment as ClientComment
@@ -34,6 +34,7 @@ class LeadDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = AddCommentForm()
+        context['fileform'] = AddFileForm()
 
         return context
 
@@ -104,6 +105,22 @@ class LeadCreateView(CreateView):
         self.object.save()
         
         return redirect(self.get_success_url())
+
+class AddFileView(View):
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+
+        form = AddFileForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            team = Team.objects.filter(created_by=self.request.user)[0]
+            file = form.save(commit=False)
+            file.team = team
+            file.lead_id = pk
+            file.created_by = request.user
+            file.save()
+
+        return redirect('leads:detail', pk=pk)
 
 class AddCommentView(View):
     def post(self, request, *args, **kwargs):

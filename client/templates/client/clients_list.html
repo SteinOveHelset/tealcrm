@@ -7,6 +7,7 @@
         <h1 class="mb-4 text-xl">Clients</h1>
 
         <a href="{% url 'clients:add' %}" class="inline-block py-4 px-6 bg-teal-600 rounded-xl text-white">Add client</a>
+        <a href="{% url 'clients:export' %}" class="inline-block py-4 px-6 rounded-xl bg-teal-500 text-white">Export clients</a>
     
         {% if clients %}
             <div class="mt-6 flex justify-between">
