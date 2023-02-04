@@ -3,7 +3,8 @@
 {% block title %}Sign up{% endblock %}
 
 {% block content %}
-    <h1 class="text-xl">Sign up</h1>
+<div class="py-6 px-6">
+    <h1 class="mb-6 text-xl">Sign up</h1>
 
     <form method="post" action=".">
         {% csrf_token %}
@@ -12,4 +13,5 @@
 
         <button class="py-4 px-8 bg-teal-500 text-white rounded-xl">Submit</button>
     </form>
+</div>
 {% endblock %}

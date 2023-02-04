@@ -1,0 +1,17 @@
+<nav class="py-6 px-6 flex justify-between bg-teal-500">
+    <a href="/" class="text-white">Teal CRM</a>
+
+    <div class="space-x-4">
+        <a href="{% url 'about' %}" class="text-white">About</a>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'team:detail' active_team.id %}" class="text-white">{{ active_team.name }}</a>
+            <a href="{% url 'dashboard:index' %}" class="py-4 px-6 bg-teal-600 rounded-xl text-white">Dashboard</a>
+            <a href="{% url 'leads:list' %}" class="py-4 px-6 bg-teal-600 rounded-xl text-white">Leads</a>
+            <a href="{% url 'clients:list' %}" class="py-4 px-6 bg-teal-600 rounded-xl text-white">Clients</a>
+            <a href="{% url 'userprofile:myaccount' %}" class="py-4 px-6 bg-teal-800 rounded-xl text-white">My account</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="py-4 px-6 bg-teal-600 rounded-xl text-white">Log in</a>
+            <a href="{% url 'userprofile:signup' %}" class="py-4 px-6 bg-teal-300 rounded-xl text-white">Sign up</a>
+        {% endif %}
+    </div>
+</nav>
