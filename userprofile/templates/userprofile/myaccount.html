@@ -11,10 +11,14 @@
     </p>
 
     <p class="mb-2">
-        <strong>Team: </strong><a href="{% url 'team:detail' team.id %}">{{ team.name }}</a>
+        {% if active_team %}
+            <strong>Team: </strong><a href="{% url 'team:detail' active_team.id %}">{{ active_team.name }}</a>
 
-        {% if team.created_by == request.user %}
-            <a href="{% url 'team:edit' team.id %}">(Edit)</a>
+            {% if active_team.created_by == request.user %}
+                <a href="{% url 'team:edit' active_team.id %}">(Edit)</a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'team:list' %}">Select team</a>
         {% endif %}
     </p>
 

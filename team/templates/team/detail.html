@@ -4,17 +4,19 @@
 
 {% block content %}
     <div class="py-6 px-6">
-        <h1 class="text-xl">{{ team.name }}</h1>
+        <h1 class="mb-6 text-xl">{{ team.name }}</h1>
+
+        <a href="{% url 'team:list' %}" class="inline-block py-4 px-6 bg-teal-600 rounded-xl text-white">Switch team</a>
 
         {% if team.created_by == request.user %}
-            <a href="{% url 'team:edit' team.id %}">(Edit)</a>
+            <a href="{% url 'team:edit' team.id %}" class="inline-block py-4 px-6 bg-sky-600 rounded-xl text-white">Edit</a>
         {% endif %}
 
         <p class="mt-6"><strong>Team owner:</strong> {{ team.created_by }}</p>
 
         <hr class="my-4">
 
-        <h2 class="font-semibold">Team members</h2>
+        <h2 class="font-semibold">Team members:</h2>
 
         {% for member in team.members.all %}
             <p>{{ member.username }}</p>

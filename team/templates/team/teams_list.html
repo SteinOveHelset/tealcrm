@@ -1,0 +1,23 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Teams{% endblock %}
+
+{% block content %}
+    <div class="py-6 px-6">
+        <h1 class="mb-6 text-2xl">Teams</h1>
+
+        <div class="grid grid-cols-4 gap-4">
+            {% for team in teams %}
+                <div class="{% if team == active_team %}bg-emerald-100{% else %}bg-gray-100{% endif %} rounded-xl p-6">
+                    <h2 class="mb-4 text-xl">{{ team.name }}</h2>
+
+                    {% if team == active_team %}
+                        <a href="{% url 'team:detail' team.id %}" class="inline-block py-4 px-6 bg-teal-600 rounded-xl text-white">Team details</a>
+                    {% else %}
+                        <a href="{% url 'team:activate' team.id %}" class="inline-block py-4 px-6 bg-teal-600 rounded-xl text-white">Activate team</a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
