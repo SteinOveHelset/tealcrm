@@ -6,7 +6,7 @@
     <div class="py-6 px-6">
         <h1 class="text-xl">{{ title }}</h1>
 
-        {% if team.plan.max_leads > team.leads.count or title == 'Edit lead' %}
+        {% if team.get_plan.max_leads > team.leads.count or title == 'Edit lead' %}
             <form method="post" action=".">
                 {% csrf_token %}
 

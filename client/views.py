@@ -12,7 +12,8 @@ from team.models import Team
 
 @login_required
 def clients_export(request):
-    clients = Client.objects.filter(created_by=request.user)
+    team = request.user.userprofile.active_team
+    clients = team.clients.all()
 
     response = HttpResponse(
         content_type='text/csv',
@@ -29,7 +30,8 @@ def clients_export(request):
 
 @login_required
 def clients_list(request):
-    clients = Client.objects.filter(created_by=request.user)
+    team = request.user.userprofile.active_team
+    clients = team.clients.all()
 
     return render(request, 'client/clients_list.html', {
         'clients': clients
@@ -37,14 +39,12 @@ def clients_list(request):
 
 @login_required
 def clients_add_file(request, pk):
-    client = get_object_or_404(Client, created_by=request.user, pk=pk)
-
     if request.method == 'POST':
         form = AddFileForm(request.POST, request.FILES)
 
         if form.is_valid():
             file = form.save(commit=False)
-            file.team = request.user.userprofile.active_team
+            file.team = request.user.userprofile.get_active_team()
             file.client_id = pk
             file.created_by = request.user
             file.save()
@@ -54,14 +54,15 @@ def clients_add_file(request, pk):
 
 @login_required
 def clients_detail(request, pk):
-    client = get_object_or_404(Client, created_by=request.user, pk=pk)
+    team = request.user.userprofile.active_team
+    client = get_object_or_404(team.clients, pk=pk)
 
     if request.method == 'POST':
         form = AddCommentForm(request.POST)
 
         if form.is_valid():
             comment = form.save(commit=False)
-            comment.team = request.user.userprofile.active_team
+            comment.team = request.user.userprofile.get_active_team()
             comment.created_by = request.user
             comment.client = client
             comment.save()
@@ -78,7 +79,7 @@ def clients_detail(request, pk):
 
 @login_required
 def clients_add(request):
-    team = request.user.userprofile.active_team
+    team = request.user.userprofile.get_active_team()
 
     if request.method == 'POST':
         form = AddClientForm(request.POST)
@@ -102,7 +103,8 @@ def clients_add(request):
 
 @login_required
 def clients_edit(request, pk):
-    client = get_object_or_404(Client, created_by=request.user, pk=pk)
+    team = request.user.userprofile.active_team
+    client = get_object_or_404(team.clients, pk=pk)
 
     if request.method == 'POST':
         form = AddClientForm(request.POST, instance=client)
@@ -122,7 +124,8 @@ def clients_edit(request, pk):
 
 @login_required
 def clients_delete(request, pk):
-    client = get_object_or_404(Client, created_by=request.user, pk=pk)
+    team = request.user.userprofile.active_team
+    client = get_object_or_404(team.clients, pk=pk)
     client.delete()
 
     messages.success(request, 'The client was deleted.')

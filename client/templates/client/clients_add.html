@@ -6,8 +6,8 @@
     <div class="py-6 px-6">
         <h1 class="text-xl">Add client</h1>
 
-        {% if team.plan.max_clients > team.clients.all|length %}
-            <form method="post" action=".">
+        {% if team.get_plan.max_clients > team.clients.all|length %}
+            <form method="post" action="." class="space-y-4">
                 {% csrf_token %}
 
                 {{ form.as_p }}

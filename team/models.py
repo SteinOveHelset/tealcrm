@@ -20,3 +20,18 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_plan(self):
+        if self.plan:
+            return self.plan
+        else:
+            if Plan.objects.count() > 0:
+                self.plan = Plan.objects.all().first()
+                self.save()
+            else:
+                plan = Plan.objects.create(name='Free', price=0, max_leads=3, max_clients=3)
+                self.plan = plan
+                self.save()
+
+            return self.plan
+            

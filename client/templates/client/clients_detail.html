@@ -36,7 +36,7 @@
             {% endfor %}
         </div>
 
-        <form method="post" action="{% url 'clients:add_comment' client.id %}">
+        <form method="post" action="{% url 'clients:add_comment' client.id %}" class="my-4">
             {% csrf_token %}
 
             {{ form.as_p }}
